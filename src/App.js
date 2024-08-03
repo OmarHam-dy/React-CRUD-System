@@ -1,23 +1,50 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import Alert from './components/alert';
 import './App.css';
+import Form from './components/form';
+import ProductContainer from './components/productContainer';
 
 function App() {
+  const getProducts = () => JSON.parse(localStorage.getItem('products'));
+  const setData = function (products) {
+    setProducts(products);
+    setDisplayedProducts(products);
+    localStorage.setItem('products', JSON.stringify(products));
+  };
+  const [products, setProducts] = useState(getProducts());
+  const [displayedProducts, setDisplayedProducts] = useState(getProducts());
+  const [updatedProduct, setUpdatedProduct] = useState(-1);
+  const [product, setProduct] = useState({
+    name: '',
+    category: '',
+    price: '',
+    description: '',
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="circle"></div>
+      <Form
+        product={product}
+        setProduct={setProduct}
+        products={products}
+        updatedProduct={updatedProduct}
+        setUpdatedProduct={setUpdatedProduct}
+        setData={setData}
+      />
+      {!products || !products.length ? (
+        <Alert />
+      ) : (
+        <ProductContainer
+          setProduct={setProduct}
+          products={products}
+          updatedProduct={updatedProduct}
+          setUpdatedProduct={setUpdatedProduct}
+          displayedProducts={displayedProducts}
+          setDisplayedProducts={setDisplayedProducts}
+          setData={setData}
+        />
+      )}
     </div>
   );
 }
