@@ -5,7 +5,11 @@ import Form from './components/form';
 import ProductContainer from './components/productContainer';
 
 function App() {
-  const getProducts = () => JSON.parse(localStorage.getItem('products'));
+  const getProducts = function () {
+    const pro = JSON.parse(localStorage.getItem('products'));
+    if (!pro) return [];
+    return pro;
+  };
   const setData = function (products) {
     setProducts(products);
     setDisplayedProducts(products);
