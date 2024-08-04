@@ -5,6 +5,16 @@ import Form from './components/form';
 import ProductContainer from './components/productContainer';
 
 function App() {
+  const [products, setProducts] = useState(getProducts());
+  const [displayedProducts, setDisplayedProducts] = useState(getProducts());
+  const [updatedProduct, setUpdatedProduct] = useState(-1);
+  const [product, setProduct] = useState({
+    name: '',
+    category: '',
+    price: '',
+    description: '',
+  });
+
   const getProducts = function () {
     const pro = JSON.parse(localStorage.getItem('products'));
     if (!pro) return [];
@@ -15,15 +25,6 @@ function App() {
     setDisplayedProducts(products);
     localStorage.setItem('products', JSON.stringify(products));
   };
-  const [products, setProducts] = useState(getProducts());
-  const [displayedProducts, setDisplayedProducts] = useState(getProducts());
-  const [updatedProduct, setUpdatedProduct] = useState(-1);
-  const [product, setProduct] = useState({
-    name: '',
-    category: '',
-    price: '',
-    description: '',
-  });
 
   return (
     <div className="App">
