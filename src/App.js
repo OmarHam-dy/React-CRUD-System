@@ -5,21 +5,16 @@ import Form from './components/form';
 import ProductContainer from './components/productContainer';
 
 function App() {
-  const [products, setProducts] = useState(getProducts());
-  const [displayedProducts, setDisplayedProducts] = useState(getProducts());
-  const [updatedProduct, setUpdatedProduct] = useState(-1);
-  const [product, setProduct] = useState({
-    name: '',
-    category: '',
-    price: '',
-    description: '',
-  });
-
   const getProducts = function () {
     const pro = JSON.parse(localStorage.getItem('products'));
     if (!pro) return [];
     return pro;
   };
+
+  const [products, setProducts] = useState(getProducts());
+  const [displayedProducts, setDisplayedProducts] = useState(getProducts());
+  const [updatedProductIndex, setUpdatedProductIndex] = useState(-1);
+
   const setData = function (products) {
     setProducts(products);
     setDisplayedProducts(products);
@@ -30,21 +25,18 @@ function App() {
     <div className="App">
       <div className="circle"></div>
       <Form
-        product={product}
-        setProduct={setProduct}
         products={products}
-        updatedProduct={updatedProduct}
-        setUpdatedProduct={setUpdatedProduct}
+        updatedProductIndex={updatedProductIndex}
+        setUpdatedProductIndex={setUpdatedProductIndex}
         setData={setData}
       />
       {!products || !products.length ? (
         <Alert />
       ) : (
         <ProductContainer
-          setProduct={setProduct}
           products={products}
-          updatedProduct={updatedProduct}
-          setUpdatedProduct={setUpdatedProduct}
+          updatedProductIndex={updatedProductIndex}
+          setUpdatedProductIndex={setUpdatedProductIndex}
           displayedProducts={displayedProducts}
           setDisplayedProducts={setDisplayedProducts}
           setData={setData}

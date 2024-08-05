@@ -1,21 +1,20 @@
-import { buildTimeValue } from "@testing-library/user-event/dist/utils";
-import { useState } from "react";
+import { buildTimeValue } from '@testing-library/user-event/dist/utils';
+import { useState } from 'react';
 
 function ProductContainer({
-  setProduct,
   products,
-  updatedProduct,
-  setUpdatedProduct,
+  updatedProductIndex,
+  setUpdatedProductIndex,
   displayedProducts,
   setDisplayedProducts,
   setData,
 }) {
-  const isAddState = () => updatedProduct === -1;
+  const isAddState = () => updatedProductIndex === -1;
 
   const getColor = function (index) {
-    if (updatedProduct == index) return "primary-subtle";
-    else if (index % 2 !== 0) return "body-secondary";
-    return "transparent";
+    if (updatedProductIndex == index) return 'primary-subtle';
+    else if (index % 2 !== 0) return 'body-secondary';
+    return 'transparent';
   };
 
   const renderProducts = function () {
@@ -32,7 +31,7 @@ function ProductContainer({
             className="update-button btn btn-outline-success"
             disabled={!isAddState()}
           >
-            <i class="fa-solid fa-pen-to-square"></i>
+            <i className="fa-solid fa-pen-to-square"></i>
           </button>
         </td>
         <td>
@@ -41,7 +40,7 @@ function ProductContainer({
             className="delete-button btn btn-outline-danger"
             disabled={!isAddState()}
           >
-            <i class="fa-solid fa-trash"></i>
+            <i className="fa-solid fa-trash"></i>
           </button>
         </td>
       </tr>
@@ -55,49 +54,49 @@ function ProductContainer({
   };
 
   const updateProduct = function (index) {
-    setProduct({
-      index: index,
-      name: products[index].name,
-      price: products[index].price,
-      category: products[index].category,
-      description: products[index].description,
-    });
-    setUpdatedProduct(index);
+    // setProduct({
+    //   index: index,
+    //   name: products[index].name,
+    //   price: products[index].price,
+    //   category: products[index].category,
+    //   description: products[index].description,
+    // });
+    setUpdatedProductIndex(index);
   };
 
   const handle = async function (e) {
-    const btn = e.target.closest(".btn");
+    const btn = e.target.closest('.btn');
 
     if (!btn) return;
 
-    const index = btn.closest("tr").dataset.index;
+    const index = btn.closest('tr').dataset.index;
 
-    if (btn.classList.contains("update-button")) {
-      btn.closest("tr").classList.add("bg-primary-subtle");
+    if (btn.classList.contains('update-button')) {
+      btn.closest('tr').classList.add('bg-primary-subtle');
       updateProduct(index);
       return;
     }
 
     const willDelete = await swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this product!",
-      icon: "warning",
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this product!',
+      icon: 'warning',
       buttons: true,
       dangerMode: true,
     });
     if (willDelete) {
       deleteProduct(index);
       swal({
-        title: "Deleted",
-        icon: "success",
-        button: "Ok",
+        title: 'Deleted',
+        icon: 'success',
+        button: 'Ok',
       });
     }
   };
 
   const searchProduct = function (e) {
     const value = e.target.value.toLowerCase();
-    const filteredProducts = products.filter((product) =>
+    const filteredProducts = products.filter(product =>
       product.name.toLowerCase().startsWith(value)
     );
     setDisplayedProducts(filteredProducts);

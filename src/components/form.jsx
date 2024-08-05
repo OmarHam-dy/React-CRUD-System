@@ -1,24 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from 'react';
 
 function Form({
   products,
-  product,
-  setProduct,
-  updatedProduct,
-  setUpdatedProduct,
+  updatedProductIndex,
+  setUpdatedProductIndex,
   setData,
 }) {
-  const isAddState = () => updatedProduct === -1;
+  const [product, setProduct] = useState({
+    name: '',
+    category: '',
+    price: '',
+    description: '',
+  });
+
+  useEffect(
+    function () {
+      if (updatedProductIndex != -1) {
+        setProduct({
+          name: products[updatedProductIndex].name,
+          price: products[updatedProductIndex].price,
+          category: products[updatedProductIndex].category,
+          description: products[updatedProductIndex].description,
+        });
+      }
+    },
+    [updatedProductIndex]
+  );
+
+  const isAddState = () => updatedProductIndex === -1;
 
   const isInputEmpty = () =>
-    Object.entries(product).some(([_, value]) => value.trim() == "");
+    Object.entries(product).some(([_, value]) => value.trim() == '');
 
   const clearInputs = function () {
     setProduct({
-      name: "",
-      category: "",
-      price: "",
-      description: "",
+      name: '',
+      category: '',
+      price: '',
+      description: '',
     });
   };
 
@@ -26,7 +45,7 @@ function Form({
     e.preventDefault();
 
     if (isInputEmpty()) {
-      swal("Warning!", "Fill the empty fields", "warning");
+      swal('Warning!', 'Fill the empty fields', 'warning');
       return;
     }
 
@@ -37,9 +56,8 @@ function Form({
   const updateProduct = function (e) {
     e.preventDefault();
 
-    const index = product.index;
     const { name, price, category, description } = product;
-    products[index] = {
+    products[updatedProductIndex] = {
       name: name,
       category: price,
       price: category,
@@ -47,7 +65,7 @@ function Form({
     };
 
     setData([...products]);
-    setUpdatedProduct(-1);
+    setUpdatedProductIndex(-1);
     clearInputs();
   };
 
@@ -63,7 +81,7 @@ function Form({
   return (
     <div>
       <div className="form-contianer bg-light-subtle w-75 mx-auto rounded-1 p-5 my-5 shadow">
-        <form action onSubmit={isAddState() ? addProduct : updateProduct}>
+        <form onSubmit={isAddState() ? addProduct : updateProduct}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
               Product Name
@@ -107,14 +125,14 @@ function Form({
             <textarea
               className="form-control"
               rows={3}
-              defaultValue={""}
+              defaultValue={''}
               name="description"
               value={product.description}
               onChange={handleChange}
             />
           </div>
           <button type="submit" className="add-update btn btn-primary me-3">
-            {isAddState() ? "Add" : "Update"}
+            {isAddState() ? 'Add' : 'Update'}
           </button>
           <button
             type="button"
